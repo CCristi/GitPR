@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Git merger",
+  "description": "This extension created a merge commit in develop",
+  "version": "1.0",
+  "background": {
+    "page": "index.html"
+  },
+  "browser_action": {},
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "background"
+  ]
+}
