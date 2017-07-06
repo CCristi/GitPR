@@ -20,7 +20,7 @@ chrome.browserAction.onClicked.addListener(() => {
       },
       jiraTicket: {
         strategy: 'dom-query',
-        selector: 'a[href^="https://ellation.atlassian.net/browse/"]',
+        selector: 'a[href^="https://atlassian.net/browse/"]',
         mapper: e => e.innerHTML.trim(),
       },
       prNumber: {
