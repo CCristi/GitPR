@@ -2,7 +2,6 @@ import {MetadataReader} from './lib/MetadataReader';
 import {PageController} from './lib/PageController';
 import {SimpleTemplateDriver} from './lib/SimpleTemplateDriver';
 import {JiraApiClient} from './lib/JiraApiClient';
-import config from './config';
 import {Config} from './lib/Config';
 
 chrome.browserAction.onClicked.addListener(() => {
@@ -52,7 +51,6 @@ chrome.browserAction.onClicked.addListener(() => {
       const boardColumnName = pluginConfig.get('boardColumn');
       const commitMessage = templateDriver.renderToString(pluginConfig.get('template'), data);
       const mergeTitle = templateDriver.renderToString('{{ title | clear }}', {
-        emojis: config.emojis,
         title: data.mergeTitle,
       });
 
