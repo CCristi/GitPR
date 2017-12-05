@@ -16,7 +16,7 @@
   <div class="form-entry">
     <label>
       Enter jira column regexp in which ticket will be moved
-      <input id="boardColumn" type="text" class="form-text" placeholder="complete"/>
+      <input id="boardColumn" type="text" class="form-text" placeholder="dev complete"/>
     </label>
   </div>
 
@@ -24,9 +24,15 @@
     <p>Enter commit template:</p>
 
     <label>
-      <textarea id="template" class="form-textarea">Jira: {{ jiraTicket }}
-Reviewers: {{ reviewers | join }}
-PR: GH-{{ prNumber }}</textarea>
+      <textarea id="template" class="form-textarea"></textarea>
+    </label>
+  </div>
+
+  <div class="form-entry">
+    <p>Enter github aliases json to map firstName.lastName instead of github nickNames: </p>
+
+    <label>
+      <textarea id="userAliases" class="form-textarea"></textarea>
     </label>
   </div>
 
