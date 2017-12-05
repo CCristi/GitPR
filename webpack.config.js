@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPLugin = require('copy-webpack-plugin');
 
 module.exports = {
   context: __dirname,
@@ -34,5 +35,11 @@ module.exports = {
       template: 'view/options.html',
       chunks: ['options'],
     }),
+    new CopyWebpackPLugin([
+      {
+        from: 'manifest.json',
+        to: 'manifest.json',
+      }
+    ])
   ],
 };
