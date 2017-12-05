@@ -62,9 +62,9 @@ chrome.browserAction.onClicked.addListener(() => {
             const toDevCompleteTransition = transitions.find(t => new RegExp(boardColumnName, 'i').test(t.name));
 
             if (!toDevCompleteTransition) {
-              throw new Error(
-                `Couldn't find column matching "${boardColumnName}". Available columns: ${transitions.map(t => t.name)}`
-              );
+              const tNames = transitions.map(t => t.name).join(', ');
+
+              throw new Error(`Couldn't find column matching "${boardColumnName}". Available columns: ${tNames}.`);
             }
 
             const {id, name} = toDevCompleteTransition;
