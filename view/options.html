@@ -8,10 +8,18 @@
 
   <div class="form-entry">
     <label>
-      Enter jira base url
-      <input id="jiraurl" type="text" class="form-text" placeholder="Example https://yourdomain.atlassian.com"/>
+      Enter jira base url which will be used for moving ticket from current Jira column to specified column
+      <input id="jiraBase" type="text" class="form-text" placeholder="https://yourdomain.atlassian.net"/>
     </label>
   </div>
+
+  <div class="form-entry">
+    <label>
+      Enter jira column regexp in which ticket will be moved
+      <input id="boardColumn" type="text" class="form-text" placeholder="complete"/>
+    </label>
+  </div>
+
   <div class="form-entry">
     <p>Enter commit template:</p>
 

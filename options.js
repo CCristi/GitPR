@@ -1,12 +1,15 @@
-import './normalize.css';
-import './options.css';
+import './css/normalize.css';
+import './css/options.css';
+import {defaultOptions} from './lib/Config';
 
 function saveOptions() {
-  const jiraBase = document.getElementById('jiraurl').value;
+  const jiraBase = document.getElementById('jiraBase').value;
+  const boardColumn = document.getElementById('boardColumn').value;
   const template = document.getElementById('template').value;
 
   chrome.storage.sync.set({
     jiraBase,
+    boardColumn,
     template,
   }, () => {
     // Update status to let user know options were saved.
@@ -21,11 +24,9 @@ function saveOptions() {
 }
 
 function loadOptions() {
-  chrome.storage.sync.get({
-    jiraBase: 'https://yourdomain.atlassian.com',
-    template: 'Jira: {{ jiraTicket }}\nReviewers: {{ reviewers | join }}\nPR: GH-{{ prNumber }}',
-  }, items => {
-    document.getElementById('jiraurl').value = items.jiraBase;
+  chrome.storage.sync.get(defaultOptions, items => {
+    document.getElementById('jiraBase').value = items.jiraBase;
+    document.getElementById('boardColumn').value = items.boardColumn;
     document.getElementById('template').value = items.template;
   });
 }
