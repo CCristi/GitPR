@@ -36,7 +36,7 @@ chrome.browserAction.onClicked.addListener(() => {
         selector: '#merge_title_field',
         mapper: e => e.value,
       },
-      updateJiraTicket: {
+      hasToUpdateJiraTicket: {
         strategy: 'js-eval',
         code: 'confirm(\'Do you want to update jira ticket ?\')',
       }
@@ -46,21 +46,25 @@ chrome.browserAction.onClicked.addListener(() => {
           return config.users[reviewer] || reviewer.toLowerCase();
         });
 
+        const {jiraTicket, hasToUpdateJiraTicket} = data;
         const jiraApi = new JiraApiClient(pluginConfig.get('jiraBase'));
+        const boardColumnName = pluginConfig.get('boardColumn');
         const commitMessage = templateDriver.renderToString(pluginConfig.get('template'), data);
         const mergeTitle = templateDriver.renderToString('{{ title | clear }}', {
           emojis: config.emojis,
           title: data.mergeTitle,
         });
 
-        const updateJiraTicket = data.jiraTicket && data.updateJiraTicket
+        const updateJiraTicket = jiraTicket && hasToUpdateJiraTicket
           ? jiraApi
-            .getTransitions(data.jiraTicket)
+            .getTransitions(jiraTicket)
             .then(response => {
-              const toDevCompleteTransition = response.data.transitions.find(t => /dev\s+complete/i.test(t.name));
+              const toDevCompleteTransition = response.data.transitions.find(t => new RegExp(boardColumnName, 'i').test(t.name));
+              const {id, name} = toDevCompleteTransition;
 
               return toDevCompleteTransition
-                ? jiraApi.postTransition(data.jiraTicket, {transition: {id: toDevCompleteTransition.id}})
+                ? jiraApi.postTransition(jiraTicket, {transition: {id}})
+                    .then(() => controller.alert(`Ticket ${jiraTicket} successfully moved to ${name}`))
                 : Promise.resolve();
             })
           : Promise.resolve();
