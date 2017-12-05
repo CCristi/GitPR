@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>GIT MERGE</title></head>
+<body>
+
+<div class="config-form">
+  <h1 class="form-title">Git Merger</h1>
+
+  <div class="form-entry">
+    <label>
+      Enter jira base url
+      <input id="jiraurl" type="text" class="form-text" placeholder="Example https://yourdomain.atlassian.com"/>
+    </label>
+  </div>
+  <div class="form-entry">
+    <p>Enter commit template:</p>
+
+    <label>
+      <textarea id="template" class="form-textarea">Jira: {{ jiraTicket }}
+Reviewers: {{ reviewers | join }}
+PR: GH-{{ prNumber }}</textarea>
+    </label>
+  </div>
+
+  <div id="status"></div>
+  <button id="save" class="btn">Save</button>
+</div>
+</body>
+</html>

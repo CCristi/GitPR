@@ -1,9 +1,14 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
 module.exports = {
   context: __dirname,
-  entry: "./index.js",
+  entry: {
+    index: './index.js',
+    options: './options.js',
+  },
   output: {
     path: __dirname + '/dist',
-    filename: "bundle.js"
+    filename: "[name].bundle.js"
   },
   module: {
     loaders: [
@@ -12,6 +17,22 @@ module.exports = {
         loader: 'babel-loader',
         exclude: /node_modules/
       },
+      {
+        test: /\.css$/,
+        loader: ['style-loader', 'css-loader']
+      }
     ]
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      template: 'view/index.html',
+      chunks: ['index'],
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'options.html',
+      template: 'view/options.html',
+      chunks: ['options'],
+    }),
+  ],
 };

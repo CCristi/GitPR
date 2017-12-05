@@ -7,9 +7,12 @@
     "page": "index.html"
   },
   "browser_action": {},
+  "options_page": "options.html",
   "permissions": [
     "tabs",
     "activeTab",
-    "background"
+    "background",
+    "storage",
+    "https://ellation.atlassian.net/*"
   ]
 }
