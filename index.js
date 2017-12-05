@@ -41,8 +41,10 @@ chrome.browserAction.onClicked.addListener(() => {
         code: 'confirm(\'Do you want to update jira ticket ?\')',
       }
     })).then(data => {
+      const userAliases = pluginConfig.get('userAliases');
+
       data.reviewers = data.reviewers.map(reviewer => {
-        return config.users[reviewer] || reviewer.toLowerCase();
+        return userAliases[reviewer] || reviewer.toLowerCase();
       });
 
       const {jiraTicket, hasToUpdateJiraTicket} = data;
