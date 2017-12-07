@@ -1,6 +1,8 @@
 import './css/normalize.css';
 import './css/options.css';
-import {defaultOptions} from './lib/Config';
+import {ChromePluginConfig} from './lib/ChromePluginConfig';
+
+const config = new ChromePluginConfig(chrome.storage);
 
 function saveOptions() {
   const jiraBase = document.getElementById('jiraBase').value;
@@ -8,13 +10,12 @@ function saveOptions() {
   const template = document.getElementById('template').value;
   const userAliases = JSON.parse(document.getElementById('userAliases').value);
 
-  chrome.storage.sync.set({
+  config.set({
     jiraBase,
     boardColumn,
     template,
     userAliases,
-  }, () => {
-    // Update status to let user know options were saved.
+  }).then(() => {
     const status = document.getElementById('status');
 
     status.textContent = 'Options saved.';
@@ -26,11 +27,11 @@ function saveOptions() {
 }
 
 function loadOptions() {
-  chrome.storage.sync.get(defaultOptions, items => {
-    document.getElementById('jiraBase').value = items.jiraBase;
-    document.getElementById('boardColumn').value = items.boardColumn;
-    document.getElementById('template').value = items.template;
-    document.getElementById('userAliases').value = JSON.stringify(items.userAliases, null, '  ');
+  config.load().then(options => {
+    document.getElementById('jiraBase').value = options.jiraBase;
+    document.getElementById('boardColumn').value = options.boardColumn;
+    document.getElementById('template').value = options.template;
+    document.getElementById('userAliases').value = JSON.stringify(options.userAliases, null, '  ');
   });
 }
 

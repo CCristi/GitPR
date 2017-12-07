@@ -2,14 +2,14 @@ import {MetadataReader} from './lib/MetadataReader';
 import {PageController} from './lib/PageController';
 import {SimpleTemplateDriver} from './lib/SimpleTemplateDriver';
 import {JiraApiClient} from './lib/JiraApiClient';
-import {Config} from './lib/Config';
+import {ChromePluginConfig} from './lib/ChromePluginConfig';
 
 chrome.browserAction.onClicked.addListener(() => {
   chrome.tabs.getSelected(null, function (tab) {
     const controller = new PageController(chrome.tabs, tab.id);
     const reader = new MetadataReader(controller);
     const templateDriver = new SimpleTemplateDriver();
-    const pluginConfig = new Config();
+    const pluginConfig = new ChromePluginConfig(chrome.storage);
 
     pluginConfig.load().then(() => reader.collect({
       reviewers: {
@@ -28,7 +28,7 @@ chrome.browserAction.onClicked.addListener(() => {
       },
       prNumber: {
         strategy: 'js-eval',
-        code: 'document.location.pathname.split("/").pop()',
+        code: document => document.location.pathname.split("/").pop(),
       },
       mergeTitle: {
         strategy: 'dom-query',
@@ -37,7 +37,8 @@ chrome.browserAction.onClicked.addListener(() => {
       },
       hasToUpdateJiraTicket: {
         strategy: 'js-eval',
-        code: 'confirm(\'Do you want to update jira ticket ?\')',
+        code: document =>
+          document.querySelector('a[href*="atlassian.net/"]') && confirm('Do you want to update jira ticket ?'),
       }
     })).then(data => {
       const userAliases = pluginConfig.get('userAliases');
@@ -57,14 +58,17 @@ chrome.browserAction.onClicked.addListener(() => {
       const updateJiraTicket = jiraTicket && hasToUpdateJiraTicket
         ? jiraApi
           .getTransitions(jiraTicket)
+          .catch(e => {
+            throw new Error(`${e.message}. Please ensure "${pluginConfig.get('jiraBase')}" is accessible.`);
+          })
           .then(response => {
             const transitions = response.data.transitions;
             const toDevCompleteTransition = transitions.find(t => new RegExp(boardColumnName, 'i').test(t.name));
 
             if (!toDevCompleteTransition) {
-              throw new Error(
-                `Couldn't find column matching "${boardColumnName}". Available columns: ${transitions.map(t => t.name)}`
-              );
+              const tNames = transitions.map(t => t.name).join(', ');
+
+              throw new Error(`Couldn't find column matching "${boardColumnName}". Available columns: ${tNames}.`);
             }
 
             const {id, name} = toDevCompleteTransition;
