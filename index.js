@@ -28,7 +28,7 @@ chrome.browserAction.onClicked.addListener(() => {
       },
       prNumber: {
         strategy: 'js-eval',
-        code: 'document.location.pathname.split("/").pop()',
+        code: document => document.location.pathname.split("/").pop(),
       },
       mergeTitle: {
         strategy: 'dom-query',
@@ -37,7 +37,8 @@ chrome.browserAction.onClicked.addListener(() => {
       },
       hasToUpdateJiraTicket: {
         strategy: 'js-eval',
-        code: 'confirm(\'Do you want to update jira ticket ?\')',
+        code: document =>
+          document.querySelector('a[href*="atlassian.net/"]') && confirm('Do you want to update jira ticket ?'),
       }
     })).then(data => {
       const userAliases = pluginConfig.get('userAliases');
