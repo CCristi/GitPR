@@ -59,7 +59,7 @@ chrome.browserAction.onClicked.addListener(() => {
         ? jiraApi
           .getTransitions(jiraTicket)
           .catch(e => {
-            throw new Error(`${e.message}. Please ensure "${pluginConfig.get('jiraBase')}" is accessible."`);
+            throw new Error(`${e.message}. Please ensure "${pluginConfig.get('jiraBase')}" is accessible.`);
           })
           .then(response => {
             const transitions = response.data.transitions;
