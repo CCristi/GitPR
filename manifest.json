@@ -13,6 +13,6 @@
     "activeTab",
     "background",
     "storage",
-    "https://ellation.atlassian.net/*"
+    "https://*.atlassian.net/*"
   ]
 }
