@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
-  "name": "Git merger",
-  "description": "This extension created a merge commit in develop",
+  "name": "Merge assistant",
+  "description": "This extension creates merge commit for you",
   "version": "1.0",
   "background": {
     "page": "index.html"
@@ -14,5 +14,10 @@
     "background",
     "storage",
     "https://*.atlassian.net/*"
-  ]
+  ],
+  "icons": {
+    "16": "icon128.png",
+    "48": "icon128.png",
+    "128": "icon128.png"
+  }
 }
