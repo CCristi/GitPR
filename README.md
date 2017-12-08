@@ -1,7 +1,10 @@
 GitPR
 ===== 
 
-GitPR creates PR message template.
+![alt text](https://raw.githubusercontent.com/CCristi/GitPR/master/assets/sloath.png)
+=====
+
+**GitPR** creates PR message template.
 
 ### Setup
 
