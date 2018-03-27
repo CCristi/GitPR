@@ -90,7 +90,5 @@ function generateTemplate() {
   })
 };
 
-console.log('index add event listeners - ');
-
 document.getElementById('geenerate_template').addEventListener('click', generateTemplate);
 document.getElementById('update_jira_board').addEventListener('click', updateJiraBoard);
