@@ -25,7 +25,7 @@ function updateJiraBoard() {
 }
 
 function jiraMoveRequest({labels, jiraTicket, hasToUpdateJiraTicket}, pluginConfig, controller) {
-  const boardColumnName = getJiraColumnUsing(labels);
+  const boardColumnName = getJiraColumnUsing(labels, pluginConfig);
   const jiraApi = new JiraApiClient(pluginConfig.get('jiraBase'));
 
   return jiraTicket ? jiraApi.getTransitions(jiraTicket)
@@ -51,15 +51,12 @@ function jiraMoveRequest({labels, jiraTicket, hasToUpdateJiraTicket}, pluginConf
   : Promise.resolve();
 }
 
-function getJiraColumnUsing(labels) {
-  for(let element of labels) {
-    switch (element) {
-      case 'hold': return 'Open';           //Not started
-      case 'wip': return 'In Progress';     //In progress
-    }
-  }
+function getJiraColumnUsing(labels, pluginConfig) {
+  const transitions = pluginConfig.get('labelTransitions');
+  const intersetedKeys = Object.keys(transitions).filter(key => labels.indexOf(key) !== -1);
+  const [firstIntersectedLabel] = intersetedKeys;
 
-  return 'Review'                           //Needs review
+  return transitions[firstIntersectedLabel || 'default'];
 }
 
 export default updateJiraBoard;
