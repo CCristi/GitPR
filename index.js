@@ -4,6 +4,8 @@ import {SimpleTemplateDriver} from './lib/SimpleTemplateDriver';
 import {JiraApiClient} from './lib/JiraApiClient';
 import {ChromePluginConfig} from './lib/ChromePluginConfig';
 import updateJiraBoard from './updateJiraBoard';
+import './css/normalize.css';
+import './css/popup.css';
 
 function generateTemplate() {
   chrome.tabs.getSelected(null, function (tab) {
