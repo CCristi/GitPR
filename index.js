@@ -3,8 +3,9 @@ import {PageController} from './lib/PageController';
 import {SimpleTemplateDriver} from './lib/SimpleTemplateDriver';
 import {JiraApiClient} from './lib/JiraApiClient';
 import {ChromePluginConfig} from './lib/ChromePluginConfig';
+import updateJiraBoard from './updateJiraBoard';
 
-chrome.browserAction.onClicked.addListener(() => {
+function generateTemplate() {
   chrome.tabs.getSelected(null, function (tab) {
     const controller = new PageController(chrome.tabs, tab.id);
     const reader = new MetadataReader(controller);
@@ -86,5 +87,10 @@ chrome.browserAction.onClicked.addListener(() => {
         updateJiraTicket,
       ]);
     });
-  });
-});
+  })
+};
+
+console.log('index add event listeners - ');
+
+document.getElementById('geenerate_template').addEventListener('click', generateTemplate);
+document.getElementById('update_jira_board').addEventListener('click', updateJiraBoard);
