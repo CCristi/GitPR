@@ -4,6 +4,7 @@ import {SimpleTemplateDriver} from './lib/SimpleTemplateDriver';
 import {JiraApiClient} from './lib/JiraApiClient';
 import {ChromePluginConfig} from './lib/ChromePluginConfig';
 import updateJiraBoard from './updateJiraBoard';
+import trackTime from './trackTime';
 import './css/normalize.css';
 import './css/popup.css';
 
@@ -93,4 +94,5 @@ function generateTemplate() {
 };
 
 document.getElementById('geenerate_template').addEventListener('click', generateTemplate);
+document.getElementById('work_log').addEventListener('click', trackTime);
 document.getElementById('update_jira_board').addEventListener('click', updateJiraBoard);
