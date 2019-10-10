@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" class="popup-wrapper">
+  <head>
+    <title>GIT MERGE</title>
+  </head>
+  <body class="popup-wrapper">
+    <div class="popup">
+      <button class="btn" id="geenerate_template">Generate Template</button>
+      <button class="btn" id="update_jira_board">Update Jira Board</button>
+      <button class="btn" id="work_log">Log work</button>
+    </div>
+    <div id="work-log-modal" class="work-log-modal hide">
+      <div class="form-entry">
+        <span class="input-title">Time spent</span>
+        <input
+          id="work-log-time"
+          class="input-text"
+          type="text"
+          placeholder="e.g. 2w 4d 6h 45m"
+        />
+      </div>
+      <div>
+        <span class="input-title">Comment</span>
+        <input
+          id="work-log-comment"
+          class="input-text"
+          type="text"
+          placeholder="Work description"
+        />
+      </div>
+      <button id="track-time" class="track-button">Track</button>
+    </div>
+    <script type="text/javascript" src="index.bundle.js"></script>
+  </body>
+</html>

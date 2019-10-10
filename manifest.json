@@ -3,10 +3,11 @@
   "name": "Merge assistant",
   "description": "This extension creates merge commit for you",
   "version": "1.0",
-  "background": {
-    "page": "index.html"
+  "browser_action": {
+    "default_title": "Git Merger",
+    "default_icon": "icon128.png",
+    "default_popup": "popup.html"
   },
-  "browser_action": {},
   "options_page": "options.html",
   "permissions": [
     "tabs",
