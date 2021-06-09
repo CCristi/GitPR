@@ -9,7 +9,7 @@ function workLog() {
 }
 
 function trackTime() {
-  chrome.tabs.getSelected(null, function(tab) {
+  chrome.tabs.getSelected(null, function (tab) {
     const controller = new PageController(chrome.tabs, tab.id);
     const reader = new MetadataReader(controller);
     const pluginConfig = new ChromePluginConfig(chrome.storage);
@@ -20,12 +20,14 @@ function trackTime() {
         reader.collect({
           jiraTicket: {
             strategy: "dom-query",
-            selector: 'a[href*="atlassian.net/"]',
-            mapper: e => e.innerHTML.trim()
-          }
+            selector: `a[href*=${new JiraApiClient(
+              pluginConfig.get("jiraBase")
+            )}]`,
+            mapper: (e) => e.innerHTML.trim(),
+          },
         })
       )
-      .then(data => jiraWorkLogRequest(data, pluginConfig, controller));
+      .then((data) => jiraWorkLogRequest(data, pluginConfig, controller));
   });
 }
 
@@ -38,18 +40,18 @@ function jiraWorkLogRequest({ jiraTicket }, pluginConfig, controller) {
   return jiraTicket
     ? jiraApi
         .postAddTime(jiraTicket, params)
-        .catch(e => {
+        .catch((e) => {
           throw new Error(
             `${e.message}. Please ensure "${pluginConfig.get(
               "jiraBase"
             )}" is accessible.`
           );
         })
-        .then(response => {
+        .then((response) => {
           console.log({ response });
           controller.alert(`Successfully logged time to ticket ${jiraTicket} `);
         })
-        .catch(e =>
+        .catch((e) =>
           controller.alert(`Error adding time to ticket: ${e.message}`)
         )
     : Promise.resolve();
@@ -58,7 +60,7 @@ function jiraWorkLogRequest({ jiraTicket }, pluginConfig, controller) {
 function getJiraColumnUsing(labels, pluginConfig) {
   const transitions = pluginConfig.get("labelTransitions");
   const intersetedKeys = Object.keys(transitions).filter(
-    key => labels.indexOf(key) !== -1
+    (key) => labels.indexOf(key) !== -1
   );
   const [firstIntersectedLabel] = intersetedKeys;
 

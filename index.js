@@ -9,7 +9,7 @@ import "./css/normalize.css";
 import "./css/popup.css";
 
 function generateTemplate() {
-  chrome.tabs.getSelected(null, function(tab) {
+  chrome.tabs.getSelected(null, function (tab) {
     const controller = new PageController(chrome.tabs, tab.id);
     const reader = new MetadataReader(controller);
     const templateDriver = new SimpleTemplateDriver();
@@ -22,40 +22,43 @@ function generateTemplate() {
           reviewers: {
             strategy: "dom-query",
             selector: ".js-issue-sidebar-form .css-truncate",
-            mapper: function(element) {
+            mapper: function (element) {
               return Array.from(element.children)
-                .filter(reviewerParagraph =>
+                .filter((reviewerParagraph) =>
                   Boolean(reviewerParagraph.querySelector(".octicon-check"))
                 )
-                .map(reviewerParagraph => reviewerParagraph.innerText.trim());
-            }
+                .map((reviewerParagraph) => reviewerParagraph.innerText.trim());
+            },
           },
           jiraTicket: {
             strategy: "dom-query",
-            selector: 'a[href*="atlassian.net/"]',
-            mapper: e => e.innerHTML.trim()
+            selector: `a[href*=${new JiraApiClient(
+              pluginConfig.get("jiraBase")
+            )}]`,
+            mapper: (e) => e.innerHTML.trim(),
           },
           prNumber: {
             strategy: "js-eval",
-            code: document => document.location.pathname.split("/").pop()
+            code: (document) => document.location.pathname.split("/").pop(),
           },
           mergeTitle: {
             strategy: "dom-query",
             selector: "#merge_title_field",
-            mapper: e => e.value
+            mapper: (e) => e.value,
           },
           hasToUpdateJiraTicket: {
             strategy: "js-eval",
-            code: document =>
-              document.querySelector('a[href*="atlassian.net/"]') &&
-              confirm("Do you want to update jira ticket ?")
-          }
+            code: (document) =>
+              document.querySelector(
+                `a[href*=${new JiraApiClient(pluginConfig.get("jiraBase"))}]`
+              ) && confirm("Do you want to update jira ticket ?"),
+          },
         })
       )
-      .then(data => {
+      .then((data) => {
         const userAliases = pluginConfig.get("userAliases");
 
-        data.reviewers = data.reviewers.map(reviewer => {
+        data.reviewers = data.reviewers.map((reviewer) => {
           return userAliases[reviewer] || reviewer.toLowerCase();
         });
 
@@ -69,7 +72,7 @@ function generateTemplate() {
         const mergeTitle = templateDriver.renderToString(
           "{{ title | clear }}",
           {
-            title: data.mergeTitle
+            title: data.mergeTitle,
           }
         );
 
@@ -77,21 +80,21 @@ function generateTemplate() {
           jiraTicket && hasToUpdateJiraTicket
             ? jiraApi
                 .getTransitions(jiraTicket)
-                .catch(e => {
+                .catch((e) => {
                   throw new Error(
                     `${e.message}. Please ensure "${pluginConfig.get(
                       "jiraBase"
                     )}" is accessible.`
                   );
                 })
-                .then(response => {
+                .then((response) => {
                   const transitions = response.data.transitions;
-                  const toDevCompleteTransition = transitions.find(t =>
+                  const toDevCompleteTransition = transitions.find((t) =>
                     new RegExp(boardColumnName, "i").test(t.name)
                   );
 
                   if (!toDevCompleteTransition) {
-                    const tNames = transitions.map(t => t.name).join(", ");
+                    const tNames = transitions.map((t) => t.name).join(", ");
 
                     throw new Error(
                       `Couldn't find column matching "${boardColumnName}". Available columns: ${tNames}.`
@@ -108,7 +111,7 @@ function generateTemplate() {
                       )
                     );
                 })
-                .catch(e =>
+                .catch((e) =>
                   controller.alert(`Error moving jira ticket: ${e.message}`)
                 )
             : Promise.resolve();
@@ -116,7 +119,7 @@ function generateTemplate() {
         return Promise.all([
           controller.updateInputValue("#merge_message_field", commitMessage),
           controller.updateInputValue("#merge_title_field", mergeTitle),
-          updateJiraTicket
+          updateJiraTicket,
         ]);
       });
   });

@@ -14,7 +14,8 @@
     "activeTab",
     "background",
     "storage",
-    "https://*.atlassian.net/*"
+    "https://*.atlassian.net/*",
+    "https://jira.tenkasu.net/*"
   ],
   "icons": {
     "16": "icon128.png",
