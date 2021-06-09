@@ -20,9 +20,7 @@ function updateJiraBoard() {
           },
           jiraTicket: {
             strategy: "dom-query",
-            selector: `a[href*=${new JiraApiClient(
-              pluginConfig.get("jiraBase")
-            )}]`,
+            selector: `a[href*=${pluginConfig.get("jiraBase")}/]`,
             mapper: (e) => e.innerHTML.trim(),
           },
         })

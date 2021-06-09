@@ -32,9 +32,7 @@ function generateTemplate() {
           },
           jiraTicket: {
             strategy: "dom-query",
-            selector: `a[href*=${new JiraApiClient(
-              pluginConfig.get("jiraBase")
-            )}]`,
+            selector: `a[href*=${pluginConfig.get("jiraBase")}/]`,
             mapper: (e) => e.innerHTML.trim(),
           },
           prNumber: {
@@ -120,7 +118,13 @@ function generateTemplate() {
           controller.updateInputValue("#merge_message_field", commitMessage),
           controller.updateInputValue("#merge_title_field", mergeTitle),
           updateJiraTicket,
-        ]);
+        ]).then((x) =>
+          console.log({
+            commitMessage,
+            mergeTitle,
+            jiraBase: pluginConfig.get("jiraBase"),
+          })
+        );
       });
   });
 }
