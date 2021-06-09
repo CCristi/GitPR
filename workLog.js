@@ -20,7 +20,7 @@ function trackTime() {
         reader.collect({
           jiraTicket: {
             strategy: "dom-query",
-            selector: `a[href*=${pluginConfig.get("jiraBase")}/]`,
+            selector: `a[href*="${pluginConfig.get("jiraBase")}/"]`,
             mapper: (e) => e.innerHTML.trim(),
           },
         })
