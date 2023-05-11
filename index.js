@@ -27,7 +27,11 @@ function generateTemplate() {
                 .filter((reviewerParagraph) =>
                   Boolean(reviewerParagraph.querySelector(".octicon-check"))
                 )
-                .map((reviewerParagraph) => reviewerParagraph.innerText.trim());
+                .map(
+                  (reviewerParagraph) =>
+                    console.log({ reviewerParagraph }) ||
+                    reviewerParagraph.innerText.trim().split("\n")[0]
+                );
             },
           },
           jiraTicket: {
@@ -57,6 +61,8 @@ function generateTemplate() {
         const userAliases = pluginConfig.get("userAliases");
 
         data.reviewers = data.reviewers.map((reviewer) => {
+          console.log("----  reviewer", reviewer);
+
           return userAliases[reviewer] || reviewer.toLowerCase();
         });
 
