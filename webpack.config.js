@@ -31,6 +31,11 @@ module.exports = {
       chunks: ['index'],
     }),
     new HtmlWebpackPlugin({
+      filename: 'popup.html',
+      template: 'view/popup.html',
+      chunks: ['popup'],
+    }),
+    new HtmlWebpackPlugin({
       filename: 'options.html',
       template: 'view/options.html',
       chunks: ['options'],

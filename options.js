@@ -9,12 +9,14 @@ function saveOptions() {
   const boardColumn = document.getElementById('boardColumn').value;
   const template = document.getElementById('template').value;
   const userAliases = JSON.parse(document.getElementById('userAliases').value);
+  const labelTransitions = JSON.parse(document.getElementById('labelTransitions').value);
 
   config.set({
     jiraBase,
     boardColumn,
     template,
     userAliases,
+    labelTransitions,
   }).then(() => {
     const status = document.getElementById('status');
 
@@ -32,6 +34,7 @@ function loadOptions() {
     document.getElementById('boardColumn').value = options.boardColumn;
     document.getElementById('template').value = options.template;
     document.getElementById('userAliases').value = JSON.stringify(options.userAliases, null, '  ');
+    document.getElementById('labelTransitions').value = JSON.stringify(options.labelTransitions, null, '  ');
   });
 }
 
